@@ -12,8 +12,8 @@ public class MediaProcessor {
 
     private static final String TRACKS_INPUT = "data/tracks.txt";
     private static final String VIDEOS_INPUT = "data/videos.txt";
-    private static final String TRACKS_OUTPUT = "tracks_output.txt";
-    private static final String VIDEOS_OUTPUT = "videos_output.txt";
+    private static final String TRACKS_OUTPUT = "out/tracks_output.txt";
+    private static final String VIDEOS_OUTPUT = "out/videos_output.txt";
 
     public static void main(String[] args) throws IOException {
 
