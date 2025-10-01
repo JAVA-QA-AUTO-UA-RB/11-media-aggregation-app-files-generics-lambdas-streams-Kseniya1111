@@ -2,9 +2,9 @@ name: Autograding
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   compile:
@@ -16,8 +16,8 @@ jobs:
       - name: Set up JDK 17 (Corretto)
         uses: actions/setup-java@v3
         with:
-          distribution: 'corretto'
-          java-version: '17'
+          distribution: "corretto"
+          java-version: "17"
 
       - name: Compile sources
         run: |
@@ -34,8 +34,8 @@ jobs:
       - name: Set up JDK 17 (Corretto)
         uses: actions/setup-java@v3
         with:
-          distribution: 'corretto'
-          java-version: '17'
+          distribution: "corretto"
+          java-version: "17"
 
       - name: Compile sources
         run: |
@@ -44,8 +44,7 @@ jobs:
 
       - name: Run MediaProcessor
         run: |
-          cd out
-          java com.example.media.app.MediaProcessor
+          java -cp out com.example.media.app.MediaProcessor
 
   check-tracks:
     name: Validate tracks_output.txt
