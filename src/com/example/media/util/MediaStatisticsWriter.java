@@ -5,86 +5,77 @@ import com.example.media.classes.Track;
 import com.example.media.classes.Video;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Клас-утиліта для запису статистики у вихідні файли.
- *
- * Студенти мають реалізувати методи нижче з використанням:
- * - Stream API
- * - лямбда-виразів
- * - method references
- *
- * Формат вихідних файлів має бути простим і "людиночитабельним"
- * (див. приклади у README.md).
- */
 public class MediaStatisticsWriter {
 
-    /**
-     * Запис статистики по музичних треках у файл.
-     *
-     * Очікуваний формат файлу `tracks_output.txt`:
-     * --------------------------------------------
-     * Tracks count: <загальна кількість треків>
-     * Average duration: <середня тривалість у секундах> seconds
-     *
-     * Top 3 tracks by rating:
-     * 1. <назва треку> (rating <рейтинг>)
-     * 2. <назва треку> (rating <рейтинг>)
-     * 3. <назва треку> (rating <рейтинг>)
-     *
-     * Pop tracks:
-     * - <назва треку>
-     * - <назва треку>
-     * --------------------------------------------
-     *
-     * Пояснення:
-     * - Tracks count → кількість елементів у плейлисті
-     * - Average duration → середня тривалість у секундах
-     * - Top 3 → відсортовані за рейтингом спаданням,
-     *   при однаковому рейтингу брати найдовші
-     * - Pop tracks → усі треки, у яких жанр == "Pop"
-     */
     public static void writeTrackStats(Playlist<Track> playlist, String filename) throws IOException {
-        // TODO: Реалізуйте цей метод
-        // Підказки:
-        // - Використайте playlist.getItems().size() для підрахунку кількості
-        // - Використайте stream().mapToInt(Track::getDuration).average() для середньої тривалості
-        // - Використайте stream().sorted(...).limit(3) для топ-3 за рейтингом
-        // - Використайте stream().filter(t -> t.getGenre().equalsIgnoreCase("Pop")) для відбору Pop-треків
-        // - Запишіть результати у файл через PrintWriter або Files.write()
+        List<Track> tracks = playlist.getItems();
+
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get(filename)))) {
+
+            writer.println("Tracks count: " + tracks.size());
+
+            double avgDuration = tracks.stream()
+                    .mapToInt(Track::getDuration)
+                    .average()
+                    .orElse(0);
+            writer.println("Average duration: " + (int) avgDuration + " seconds\n");
+
+            writer.println("Top 3 tracks by rating:");
+            AtomicInteger counter = new AtomicInteger(1); // Счётчик для нумерации
+            tracks.stream()
+                    .sorted(Comparator.comparingInt(Track::getRating).reversed()
+                            .thenComparing(Comparator.comparingInt(Track::getDuration).reversed()))
+                    .limit(3)
+                    .forEachOrdered(t -> writer.println(counter.getAndIncrement() + ". "
+                            + t.getTitle() + " (rating " + t.getRating() + ")"));
+
+            writer.println();
+
+            writer.println("Pop tracks:");
+            tracks.stream()
+                    .filter(t -> t.getGenre().equalsIgnoreCase("Pop"))
+                    .forEach(t -> writer.println("- " + t.getTitle()));
+
+            writer.println("--------------------------------------------");
+        }
     }
 
-    /**
-     * Запис статистики по відео у файл.
-     *
-     * Очікуваний формат файлу `videos_output.txt`:
-     * --------------------------------------------
-     * Videos count: <загальна кількість відео>
-     * Average duration: <середня тривалість у секундах> seconds
-     *
-     * Top 3 videos by views:
-     * 1. <назва відео> (<кількість переглядів> views)
-     * 2. <назва відео> (<кількість переглядів> views)
-     * 3. <назва відео> (<кількість переглядів> views)
-     *
-     * Education videos:
-     * - <назва відео>
-     * - <назва відео>
-     * --------------------------------------------
-     *
-     * Пояснення:
-     * - Videos count → кількість елементів у плейлисті
-     * - Average duration → середня тривалість у секундах
-     * - Top 3 → відсортовані за views спаданням
-     * - Education videos → усі відео, у яких category == "Education"
-     */
     public static void writeVideoStats(Playlist<Video> playlist, String filename) throws IOException {
-        // TODO: Реалізуйте цей метод
-        // Підказки:
-        // - Використайте playlist.getItems().size() для підрахунку кількості
-        // - Використайте stream().mapToInt(Video::getDuration).average() для середньої тривалості
-        // - Використайте stream().sorted(...).limit(3) для топ-3 за views
-        // - Використайте stream().filter(v -> v.getCategory().equalsIgnoreCase("Education")) для Education-відео
-        // - Запишіть результати у файл через PrintWriter або Files.write()
+        List<Video> videos = playlist.getItems();
+
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get(filename)))) {
+
+            writer.println("Videos count: " + videos.size());
+
+            double avgDuration = videos.stream()
+                    .mapToInt(Video::getDuration)
+                    .average()
+                    .orElse(0);
+            writer.println("Average duration: " + (int) avgDuration + " seconds\n");
+            writer.println("Top 3 videos by views:");
+            AtomicInteger counter = new AtomicInteger(1); // Счётчик для нумерации
+            videos.stream()
+                    .sorted(Comparator.comparingInt(Video::getViews).reversed())
+                    .limit(3)
+                    .forEachOrdered(v -> writer.println(counter.getAndIncrement() + ". "
+                            + v.getTitle() + " (" + v.getViews() + " views)"));
+
+            writer.println();
+            writer.println("Education videos:");
+            videos.stream()
+                    .filter(v -> v.getCategory().equalsIgnoreCase("Education"))
+                    .forEach(v -> writer.println("- " + v.getTitle()));
+
+            writer.println("--------------------------------------------");
+        }
     }
+
 }
+
