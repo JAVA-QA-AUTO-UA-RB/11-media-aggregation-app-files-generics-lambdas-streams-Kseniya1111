@@ -1,4 +1,4 @@
-Tracks count: 20
+Tracks count: 21
 Average duration: 275 seconds
 
 Top 3 tracks by rating:
@@ -13,5 +13,6 @@ Pop tracks:
 - Rolling in the Deep
 - Uptown Funk
 - Poker Face
+- Halo
 - Halo
 --------------------------------------------

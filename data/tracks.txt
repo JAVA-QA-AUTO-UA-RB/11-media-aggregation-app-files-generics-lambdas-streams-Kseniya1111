@@ -19,3 +19,4 @@ Stronger;Kanye West;HipHop;312;9
 Wake Me Up;Avicii;Electronic;247;9
 Sweet Child O' Mine;Guns N' Roses;Rock;356;10
 Halo;Beyonce;Pop;261;9
+Halo;Beyonce;Pop;261;9
