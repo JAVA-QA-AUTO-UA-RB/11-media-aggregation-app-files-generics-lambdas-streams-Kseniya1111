@@ -19,3 +19,4 @@ Standup Special;ComedyHub;Entertainment;720;520000
 World Cup Moments;SportsLive;Sports;660;880000
 AI in Everyday Life;TechWorld;Education;900;150000
 Funny Dogs Compilation;AnimalFun;Entertainment;360;900000
+Funny Dogs Compilation;AnimalFun;Entertainment;360;900000
